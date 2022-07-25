@@ -4,12 +4,20 @@ import Header from '../Header';
 import PostsList from '../PostsList';
 import Footer from '../Footer';
 
-export default function Layout() {
+export default function Layout({ onToggleTheme, onSetPurpleTheme, selectedTheme }) {
   return (
     <>
-      <Header />
+      <Header
+        onToggleTheme={onToggleTheme}
+        onSetPurpleTheme={onSetPurpleTheme}
+        selectedTheme={selectedTheme}
+        />
       <PostsList />
-      <Footer />
+      <Footer
+        onToggleTheme={onToggleTheme}
+        onSetPurpleTheme={onSetPurpleTheme}
+        selectedTheme={selectedTheme}
+      />
     </>
   );
 }
