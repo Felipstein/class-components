@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { Container } from './styles';
 import Button from '../Button';
 
-export default function Header({ onToggleTheme, onSetPurpleTheme, selectedTheme }) {
-  return (
+export default class Header extends Component {
+
+  render() {
+    const { onToggleTheme, onSetPurpleTheme, selectedTheme } = this.props;
+
+    return (
     <Container>
       <h1>JStack's Blog</h1>
       <Button onClick={onToggleTheme}>
@@ -12,5 +16,19 @@ export default function Header({ onToggleTheme, onSetPurpleTheme, selectedTheme 
       </Button>
       <Button onClick={onSetPurpleTheme}>🟣</Button>
     </Container>
-  );
+    );
+  }
+
 }
+
+// export default function Header({ onToggleTheme, onSetPurpleTheme, selectedTheme }) {
+//   return (
+//     <Container>
+//       <h1>JStack's Blog</h1>
+//       <Button onClick={onToggleTheme}>
+//         {selectedTheme === 'dark' ? '🌞' : '🌚'}
+//       </Button>
+//       <Button onClick={onSetPurpleTheme}>🟣</Button>
+//     </Container>
+//   );
+// }
