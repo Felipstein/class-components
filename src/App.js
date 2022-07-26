@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyle from './styles/global';
@@ -8,29 +8,24 @@ import themes from './styles/themes';
 
 class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      theme: 'dark',
-    }
-
-    this.handleToggleTheme = this.handleToggleTheme.bind(this);
-    this.handleSetPurpleTheme = this.handleSetPurpleTheme.bind(this);
+  state = {
+    theme: 'dark'
   }
 
-  handleToggleTheme() {
+  handleToggleTheme = () => {
     this.setState(prevState => ({ 
       theme: prevState.theme === 'dark' ? 'light' : 'dark',
     }));
   }
 
-  handleSetPurpleTheme() {
+  handleSetPurpleTheme = () => {
     this.setState({ theme: 'purple' });
   }
 
   render() {
     const { theme } = this.state;
+
+    console.debug('<App /> renderizou');
 
     return (
       <ThemeProvider theme={themes[theme] || themes.dark}>
