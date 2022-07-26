@@ -6,46 +6,44 @@ import Layout from './components/Layout';
 
 import themes from './styles/themes';
 
-function App() {
+class App extends React.Component {
 
-  const [theme, setTheme] = useLocalState('dark');
+  constructor(props) {
+    super(props);
 
-  const currentTheme = useMemo(() => {
-    return themes[theme] || themes.dark;
-  }, [theme]);
-
-  function handleToggleTheme() {
-    setTheme(prevState => prevState === 'dark' ? 'light' : 'dark');
-  }
-
-  return (
-    <ThemeProvider theme={currentTheme}>
-      <GlobalStyle />
-      <Layout
-        onToggleTheme={handleToggleTheme}
-        onSetPurpleTheme={() => setTheme('purple')}
-        selectedTheme={theme}
-      />
-    </ThemeProvider>
-  );
-};
-
-function useLocalState(key, initialValue = '') {
-  const [state, setState] = useState(() => {
-    const storedData = localStorage.getItem(key);
-
-    if(storedData) {
-      return JSON.parse(storedData);
+    this.state = {
+      theme: 'dark',
     }
 
-    return initialValue;
-  });
+    this.handleToggleTheme = this.handleToggleTheme.bind(this);
+    this.handleSetPurpleTheme = this.handleSetPurpleTheme.bind(this);
+  }
 
-  useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(state));
-  }, [key, state]);
+  handleToggleTheme() {
+    this.setState(prevState => ({ 
+      theme: prevState.theme === 'dark' ? 'light' : 'dark',
+    }));
+  }
 
-  return [state, setState];
+  handleSetPurpleTheme() {
+    this.setState({ theme: 'purple' });
+  }
+
+  render() {
+    const { theme } = this.state;
+
+    return (
+      <ThemeProvider theme={themes[theme] || themes.dark}>
+        <GlobalStyle />
+        <Layout
+          onToggleTheme={this.handleToggleTheme}
+          onSetPurpleTheme={this.handleSetPurpleTheme}
+          selectedTheme={theme}
+        />
+      </ThemeProvider>
+    );
+  }
+
 }
 
 export default App;
