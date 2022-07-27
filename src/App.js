@@ -14,14 +14,10 @@ class App extends React.Component {
     return (
       <ThemeProvider>
         <ThemeContext.Consumer>
-          {({ theme, handleToggleTheme, handleSetPurpleTheme }) => (
+          {({ theme }) => (
             <StyledThemeProvider theme={themes[theme] || themes.dark}>
               <GlobalStyle />
-              <Layout
-                onToggleTheme={handleToggleTheme}
-                onSetPurpleTheme={handleSetPurpleTheme}
-                selectedTheme={theme}
-              />
+              <Layout />
             </StyledThemeProvider>
           )}
         </ThemeContext.Consumer>
