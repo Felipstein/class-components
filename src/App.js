@@ -1,40 +1,30 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
 import GlobalStyle from './styles/global';
 import Layout from './components/Layout';
+import { ThemeProvider, ThemeContext } from './contexts/ThemeContext';
 
 import themes from './styles/themes';
 
 class App extends React.Component {
 
-  state = {
-    theme: 'dark'
-  }
-
-  handleToggleTheme = () => {
-    this.setState(prevState => ({ 
-      theme: prevState.theme === 'dark' ? 'light' : 'dark',
-    }));
-  }
-
-  handleSetPurpleTheme = () => {
-    this.setState({ theme: 'purple' });
-  }
-
   render() {
-    const { theme } = this.state;
-
-    console.debug('<App /> renderizou');
 
     return (
-      <ThemeProvider theme={themes[theme] || themes.dark}>
-        <GlobalStyle />
-        <Layout
-          onToggleTheme={this.handleToggleTheme}
-          onSetPurpleTheme={this.handleSetPurpleTheme}
-          selectedTheme={theme}
-        />
+      <ThemeProvider>
+        <ThemeContext.Consumer>
+          {({ theme, handleToggleTheme, handleSetPurpleTheme }) => (
+            <StyledThemeProvider theme={themes[theme] || themes.dark}>
+              <GlobalStyle />
+              <Layout
+                onToggleTheme={handleToggleTheme}
+                onSetPurpleTheme={handleSetPurpleTheme}
+                selectedTheme={theme}
+              />
+            </StyledThemeProvider>
+          )}
+        </ThemeContext.Consumer>
       </ThemeProvider>
     );
   }
