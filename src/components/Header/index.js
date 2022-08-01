@@ -1,16 +1,39 @@
-import React from 'react';
+import React, { Component } from "react";
 
-import { Container } from './styles';
-import Button from '../Button';
+import { ThemeContext } from "../../contexts/ThemeContext";
 
-export default function Header({ onToggleTheme, onSetPurpleTheme, selectedTheme }) {
-  return (
-    <Container>
-      <h1>JStack's Blog</h1>
-      <Button onClick={onToggleTheme}>
-        {selectedTheme === 'dark' ? '🌞' : '🌚'}
-      </Button>
-      <Button onClick={onSetPurpleTheme}>🟣</Button>
-    </Container>
-  );
+import { Container } from "./styles";
+import Button from "../Button";
+
+function HOC(HeaderComponent) {
+  return class Component extends Component {
+    
+    render() {
+      return (
+        <ThemeContext.Consumer>
+        {(values) => (
+          <HeaderComponent {...values} />
+        )}
+      </ThemeContext.Consumer>
+      );
+    }
+
+  }
 }
+class Header extends Component {
+
+  render() {
+
+    return (
+      <Container>
+        <h1>JStack's Blog</h1>
+        <Button onClick={this.props.handleToggleTheme}>
+          {this.props.theme === "dark" ? "🌞" : "🌚"}
+        </Button>
+        <Button onClick={this.props.handleSetPurpleTheme}>🟣</Button>
+      </Container>
+    );
+  }
+}
+
+export default HOC(Header);

@@ -1,51 +1,75 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { ThemeProvider } from 'styled-components';
+import React from 'react';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
 import GlobalStyle from './styles/global';
 import Layout from './components/Layout';
+import { ThemeProvider, ThemeContext } from './contexts/ThemeContext';
 
 import themes from './styles/themes';
 
-function App() {
+class App extends React.Component {
 
-  const [theme, setTheme] = useLocalState('dark');
-
-  const currentTheme = useMemo(() => {
-    return themes[theme] || themes.dark;
-  }, [theme]);
-
-  function handleToggleTheme() {
-    setTheme(prevState => prevState === 'dark' ? 'light' : 'dark');
+  state = {
+    changed: false,
   }
 
-  return (
-    <ThemeProvider theme={currentTheme}>
-      <GlobalStyle />
-      <Layout
-        onToggleTheme={handleToggleTheme}
-        onSetPurpleTheme={() => setTheme('purple')}
-        selectedTheme={theme}
-      />
-    </ThemeProvider>
-  );
-};
+  componentDidMount() {
+    console.debug('componentDidMount executed')
+  }
 
-function useLocalState(key, initialValue = '') {
-  const [state, setState] = useState(() => {
-    const storedData = localStorage.getItem(key);
+  componentDidUpdate(prevProps, prevState) {
+    console.debug({
+      currentState: this.state,
+      currentProps: this.props,
+      prevState,
+      prevProps,
+    });
+  }
 
-    if(storedData) {
-      return JSON.parse(storedData);
-    }
+  componentDidCatch(error, info) {
 
-    return initialValue;
-  });
+    console.debug({ error, info });
 
-  useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(state));
-  }, [key, state]);
+  }
 
-  return [state, setState];
+  shouldComponentUpdate(nextProps, nextState) {
+
+    console.debug({
+      currentState: this.state,
+      currentProps: this.props,
+      nextState,
+      nextProps,
+    });
+
+    return true;
+  }
+
+  componentWillUnmount() {
+    console.debug('Tchau tchau!!!')
+  }
+
+  render() {
+    console.debug('rendered');
+
+    return (
+      <ThemeProvider>
+
+        <button onClick={() => this.setState({ changed: true })}>
+          Change state
+        </button>
+
+        <ThemeContext.Consumer>
+          {({ theme }) => (
+            <StyledThemeProvider theme={themes[theme] || themes.dark}>
+              <GlobalStyle />
+              <Layout />
+            </StyledThemeProvider>
+          )}
+        </ThemeContext.Consumer>
+      </ThemeProvider>
+    );
+  }
+
 }
 
 export default App;
