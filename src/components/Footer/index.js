@@ -4,17 +4,22 @@ import { ThemeContext } from '../../contexts/ThemeContext';
 import { Container } from './styles';
 import Button from '../Button';
 
-export default function Footer() {
+export default class Footer extends React.Component {
 
-  const { theme, handleToggleTheme, handleSetPurpleTheme } = useContext(ThemeContext);
+  render() {
+    return (
+      <ThemeContext.Consumer>
+        {({ theme, handleToggleTheme, handleSetPurpleTheme }) => (
+          <Container>
+            <span>JStack's Blog. Todos os direitos reservados.</span>
+            <Button onClick={handleToggleTheme}>
+              {theme === 'dark' ? '🌞' : '🌚'}
+            </Button>
+            <Button onClick={handleSetPurpleTheme}>🟣</Button>
+          </Container>
+        )}
+      </ThemeContext.Consumer>
+    );
+  }
 
-  return (
-    <Container>
-      <span>JStack's Blog. Todos os direitos reservados.</span>
-      <Button onClick={handleToggleTheme}>
-        {theme === 'dark' ? '🌞' : '🌚'}
-      </Button>
-      <Button onClick={handleSetPurpleTheme}>🟣</Button>
-    </Container>
-  );
 }
