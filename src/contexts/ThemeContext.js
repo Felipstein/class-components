@@ -33,6 +33,15 @@ export class ThemeProvider extends React.Component {
     localStorage.setItem('theme', JSON.stringify(this.state.theme));
   }
 
+  componentDidUpdate(prevProps, prevState) {
+
+    if(prevState.theme !== this.state.theme) {
+      console.debug('tema mudou...');
+      // this.handleLocalStorageTheme();
+    }
+
+  }
+
   render() {
 
     return (
