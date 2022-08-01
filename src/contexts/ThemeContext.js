@@ -2,22 +2,36 @@ import React, { createContext, useState  } from "react";
 
 export const ThemeContext = createContext();
 
-export function ThemeProvider({ children }) {
-  
-  const [theme, setTheme] = useState('dark');
+export class ThemeProvider extends React.Component {
 
-  function handleToggleTheme() {
-    setTheme(prevState => prevState === 'dark' ? 'light' : 'dark');
-  }
-  
-  function handleSetPurpleTheme() {
-    setTheme('purple');
+  state = {
+    theme: 'dark',
   }
 
-  return (
-    <ThemeContext.Provider value={{ theme, handleToggleTheme, handleSetPurpleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  handleToggleTheme = () => {
+    this.setState(prevState => ({
+      theme: prevState.theme === 'dark' ? 'light' : 'dark'
+    }))
+  }
+
+  handleSetPurpleTheme = () => {
+    this.setState({ theme: 'purple' });
+  }
+
+  render() {
+
+    return (
+      <ThemeContext.Provider
+        value={{
+          theme: this.state.theme,
+          handleToggleTheme: this.handleToggleTheme,
+          handleSetPurpleTheme: this.handleSetPurpleTheme,
+        }}
+      >
+        {this.props.children}
+      </ThemeContext.Provider>
+    );
+
+  }
 
 }
